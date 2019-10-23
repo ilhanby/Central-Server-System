@@ -1,0 +1,158 @@
+﻿<UserControl x:Class="DataloggerMerkez.UserControls.ServerUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DataloggerMerkez.UserControls"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+             d:DesignHeight="300" d:DesignWidth="200" Loaded="UserControl_Loaded" >
+    <Grid Margin="5">
+        <Grid.Effect>
+            <DropShadowEffect Direction="171" BlurRadius="4" ShadowDepth="3"/>
+        </Grid.Effect>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" MinHeight="140">
+            <!--SYSTEMNAME-->
+            <Label x:Name="systemnamelabel" Foreground="#FFEEE8D9" Content="asdasdasd" HorizontalContentAlignment="Center"/>
+            <!--AKTİF PASİF-->
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Column="0">
+                    <Viewbox>
+                        <Label Content="AKTİF" HorizontalContentAlignment="Left" Foreground="Lime"></Label>
+                    </Viewbox>
+                </Grid>
+                <Grid Grid.Column="5">
+                    <Viewbox>
+                        <Label Content="PASİF" HorizontalContentAlignment="Right" Foreground="Red"></Label>
+                    </Viewbox>
+                </Grid>
+            </Grid>
+            <!--AKTİF PASİF DEGERLER-->
+            <Grid VerticalAlignment="Center" Height="25" Margin="0,35,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Column="0">
+                    <Viewbox>
+                        <Label x:Name="onlinegatewaycountlabel" HorizontalContentAlignment="Center"
+                               Foreground="Lime" HorizontalAlignment="Left" Content="155"></Label>
+                    </Viewbox>
+                </Grid>
+                <Grid Grid.Column="5">
+                    <Viewbox>
+                        <Label Grid.Column="3" x:Name="offlinegatewaycountlabel" HorizontalContentAlignment="Center" 
+                               Foreground="Red" HorizontalAlignment="Right" Content="155"></Label>
+                    </Viewbox>
+                </Grid>
+            </Grid>
+            <!-- Chart -->
+            <lvc:Gauge x:Name="livechart"
+                   From="0" To="100" Value="90"
+                   LabelsVisibility="Collapsed" 
+                   Margin="35,25,35,25"
+                   Uses360Mode="True" 
+                   Foreground="#FFEEE8D9" GaugeActiveFill="Lime" GaugeBackground="Red"/>
+        </Grid>
+
+        <Grid VerticalAlignment="Bottom" Margin="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--SUNUCU-->
+            <Grid Grid.Column="0">
+                <Border x:Name="txtServer"  CornerRadius="5" Margin="8,0">
+                    <TextBox x:Name="txtServerText" Text="SUNUCU" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                             IsReadOnly="True" FontSize="10" Background="{x:Null}"/>
+                </Border>
+            </Grid>
+            <!--SMS/M-->
+            <Grid Grid.Column="1" Margin="3,0">
+                <Border x:Name="txtSms" CornerRadius="5">
+                    <TextBox x:Name="txtSmsText" Text="SMS/MAIL"  BorderThickness="0" IsReadOnly="True" HorizontalContentAlignment="Center" 
+                              VerticalContentAlignment="Center" FontSize="10" Background="{x:Null}"/>
+                </Border>
+            </Grid>
+            <!--ARAMA-->
+            <Grid Grid.Column="2">
+                <Border x:Name="txtCall" CornerRadius="5" Margin="8,0">
+                    <TextBox x:Name="txtCallText" Text="ARAMA" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                              FontSize="10" IsReadOnly="True" Background="{x:Null}"/>
+                </Border>
+            </Grid>
+
+        </Grid>
+
+        <!--LISTVIEW-->
+        <Grid Grid.Row="1" Margin="3,3,3,0" MaxHeight="140">
+            <Grid.Effect>
+                <DropShadowEffect Direction="269" ShadowDepth="2" BlurRadius="6"/>
+            </Grid.Effect>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <ListView Name="ListView1"  Background="{DynamicResource MaterialDesignCardBackground}" FontSize="11" 
+                      SizeChanged="ListView1_SizeChanged">
+                    <ListView.View>
+                        <GridView x:Name="gridview">
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=GatewayName}">GATEWAY</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=GatewayActiveCount}" Width="35">AKTİF</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=GatewayPassiveCount}" Width="35">PASİF</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="ToolTip" Value="{Binding Path=GatewayName}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding GatewayIsActive}" Value="true">
+                                    <Setter Property="Background" Value="Lime"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding GatewayIsActive}" Value="false">
+                                    <Setter Property="Background" Value="Red"/>
+                                    <Setter Property="Focusable" Value="False"/>
+                                    <Setter Property="Foreground" Value="Navy"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.Resources>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="Background" Value="{DynamicResource MaterialDesignSelection}"/>
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="#FFEEE8D9"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.Resources>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>
